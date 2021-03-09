@@ -29,7 +29,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
-    compile 'mysql:mysql-connector-java'
+//    compile 'mysql:mysql-connector-java'
+
+    compile 'mysql:mysql-connector-java:8.0.20'
 }
 
 test {
