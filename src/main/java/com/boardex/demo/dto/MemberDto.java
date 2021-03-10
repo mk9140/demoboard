@@ -1,9 +1,15 @@
 package com.boardex.demo.dto;
 
+import com.boardex.demo.domain.entity.MemberEntity;
 import lombok.*;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,11 +30,35 @@ public class MemberDto {
 	@Pattern(regexp="(?=\\S+$).{1,10}", message = "공백없이 10자이내로 입력해 주세요")
 	private String userName;
 
+	private boolean enabled;
+
+	private String role;
+
+
+	/* DTO에서 필요한 부분을 Entity로 만듦*/
+	public MemberEntity toEntity() {
+		MemberEntity memberEntity = MemberEntity.builder()
+				.id(id)
+				.userId(userId)
+				.userPassword(userPassword)
+				.userName(userName)
+				.enabled(enabled)
+				.role(role)
+				.build();
+		return memberEntity;
+	}
+
+
+//	private List<RoleEntity> roles = new ArrayList<>();
+
+
 	@Builder
-	public MemberDto(Long id, String userId, String userPassword,String userName) {
+	public MemberDto(Long id, String userId, String userPassword,String userName, boolean enabled, String  role) {
 		this.id = id;
 		this.userId = userId;
 		this.userPassword = userPassword;
 		this.userName = userName;
+		this.enabled = enabled;
+		this.role = role;
 	}
 }

@@ -15,29 +15,42 @@ import java.util.Map;
 @Controller
 @AllArgsConstructor
 public class LoginController {
-	private MemberService memberService;
+	private final MemberService memberService;
 
 	// 로그인 페이지
 	@GetMapping("/")
 	public String toLogin() {
-		return "/login/login";
-//		return "redirect:/list";// 임시로
+		return "/index";
 
 	}
 
+//
+//	@GetMapping("/member/login")
+//	public String dispLogin() {
+//		return "/login/login";
+//
+//	}
+
+	//TEST
+	@GetMapping("/user/login/result")
+		 public String dispLogout() {
+     return "/test";
+ 	}
+
+
+
 
 	// 회원가입 페이지
-	@GetMapping("/signup")
+	@GetMapping("/member/signup")
 	public String toSingup(MemberDto memberDto) {
 		return "/login/signup";
 	}
 
-	// 회원가입 처리
-	@PostMapping("/signup")
+/*	// 회원가입 처리
+	@PostMapping("/member/signup")
 	public String execSignup(@Valid MemberDto memberDto, Errors errors, Model model) {
 		// @Vaild ? html입력값이 dto클래스로 캡슐화되어 넘어올 때, 유효성 체크 지시하는 어노테이션
 		// Errors ? 유효성체크 결과 오류있으면 그에 대한 정보 저장
-		System.out.println(memberDto.toString());
 
 		if (errors.hasErrors()) { // hasErrors() 유효성체크에서 에러가 있는 경우
 			// 회원가입 실패시, 입력 데이터는 유지하면서
@@ -51,42 +64,17 @@ public class LoginController {
 			// 그대로 회원가입 페이지에 머무르기
 			return "/login/signup";
 		}
+
 		//회원가입 로직 실행
-		memberService.memberInsert(memberDto);
+		String rst = memberService.memberInsert(memberDto);
+		System.out.println("rst = " + rst);
 
 		//로그인화면으로 이동
 		return "redirect:/login";
-	}
+	}*/
 
 
 
 
 
-	// 로그인 성공페이지
-	@PostMapping("/login")
-	public String excLogin() {
-
-		return "/board";
-	}
-
-
-	// 로그인 성공페이지->게시글목록으로 이동
-	@GetMapping("/user/login/success")
-	public String toBoard() {
-		return "redirect:/list";
-	}
-
-	// 로그인 실패 페이지
-	@GetMapping("/user/login/result")
-	public String toLoginFail() {
-		return "/loginFail";
-	}
-
-
-	// 로그인 성공페이지
-	@PostMapping("/test")
-	public String toTest() {
-
-		return "/test";
-	}
 }

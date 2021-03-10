@@ -20,6 +20,7 @@ public class BoardService {
 
 	@Transactional //선언적 트랜잭션. 트랜잭션 적용하는 어노테이션
 	public Long savePost(BoardDto boardDto) {
+		System.out.println("BoardService.savePost");
 		return boardRepository.save(boardDto.toEntity()).getArticleNumber();
 		//save()함수->Jpa에서 정의. DB의 INSERT, UPDATE 담당
 	}

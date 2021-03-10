@@ -16,8 +16,8 @@ public class BoardController {
 	private BoardService boardService;
 
 
-	/* 글 목록 */
-	@GetMapping("/list")
+	/* 글 목록 페이지 */
+	@GetMapping("/board/list")
 	public String dispList(Model model) {
 		List<BoardDto> boardList = boardService.getBoardList();
 		model.addAttribute("boardList", boardList);
@@ -25,16 +25,18 @@ public class BoardController {
 	}
 
 	/* 글 작성 페이지 */
-	@GetMapping("/post")
+	@GetMapping("/board/post")
 	public String dispWrite() {
+		System.out.println("BoardController.dispWrite");
 		return "board/write";
 	}
 
 	/* 글 작성 처리 */
-	@PostMapping("/post")
+	@PostMapping("/board/post")
 	public String excWrite(BoardDto boardDto) {
+		System.out.println("BoardController.excWrite");
 		boardService.savePost(boardDto);
-		return "redirect:/list";
+		return "redirect:/board/list";
 	}
 
 }
