@@ -19,15 +19,15 @@ public class MemberDto {
 	private Long id; // for db
 
 	@NotBlank(message = "ID를 입력해 주세요")
-	@Pattern(regexp="(?=\\S+$).{1,10}", message = "공백없이 10자이내로 입력해 주세요")
+	@Pattern(regexp="(?=\\S+$).{1,10}", message = "ID는 공백없이 10자이내로 입력해 주세요")
 	private String userId;
 
 	@NotBlank(message = "비밀번호를 입력해 주세요")
-	@Pattern(regexp="(?=\\S+$).{1,10}", message = "공백없이 10자이내로 입력해 주세요")
+	@Pattern(regexp="(?=\\S+$).{1,10}", message = "비밀번호는 공백없이 10자이내로 입력해 주세요")
 	private String userPassword;
 
 	@NotBlank(message = "이름을 입력해 주세요")
-	@Pattern(regexp="(?=\\S+$).{1,10}", message = "공백없이 10자이내로 입력해 주세요")
+	@Pattern(regexp="(?=\\S+$).{1,10}", message = "이름은 공백없이 10자이내로 입력해 주세요")
 	private String userName;
 
 	private boolean enabled;

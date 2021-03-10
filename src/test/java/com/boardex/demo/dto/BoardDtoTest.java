@@ -4,11 +4,8 @@ import com.boardex.demo.domain.entity.BoardEntity;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 class BoardDtoTest {
-	BoardEntity boardEntity;
 
 	@Test
 	public void toEntity() {
@@ -17,20 +14,20 @@ class BoardDtoTest {
 		String writer = "test writer";
 		String title = "test title";
 		String content = "test content";
+		BoardDto boardDto = new BoardDto();
+		boardDto.setArticleNumber(articleNumber);
+		boardDto.setWriter(writer);
+		boardDto.setTitle(title);
+		boardDto.setContent(content);
 
 		//when : boardEntity 객체에 값을 넣는다.
-		BoardEntity boardEntity = BoardEntity.builder()
-				.articleNumber(articleNumber)
-				.writer(writer)
-				.title(title)
-				.content(content)
-				.build();
+		BoardEntity result = boardDto.toEntity();
 
-		//then : boardEntity 객체가 가지고 있는 값과 테스트로 입력한 값이 같아야 한다.
-		Assertions.assertThat(boardEntity.getArticleNumber()).isEqualTo(articleNumber);
-		Assertions.assertThat(boardEntity.getWriter()).isEqualTo(writer);
-		Assertions.assertThat(boardEntity.getTitle()).isEqualTo(title);
-		Assertions.assertThat(boardEntity.getContent()).isEqualTo(content);
+		//then : boardEntity 객체가 가지고 있는 값과 테스트로 입력한 DTO->엔티티 변환 값이 같아야 한다.
+		Assertions.assertThat(result.getArticleNumber()).isEqualTo(boardDto.getArticleNumber());
+		Assertions.assertThat(result.getWriter()).isEqualTo(boardDto.getWriter());
+		Assertions.assertThat(result.getTitle()).isEqualTo(boardDto.getTitle());
+		Assertions.assertThat(result.getContent()).isEqualTo(boardDto.getContent());
 	}
 
 }

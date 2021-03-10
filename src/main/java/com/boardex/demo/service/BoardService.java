@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +21,6 @@ public class BoardService {
 
 	@Transactional //선언적 트랜잭션. 트랜잭션 적용하는 어노테이션
 	public Long savePost(BoardDto boardDto) {
-		System.out.println("BoardService.savePost");
 		return boardRepository.save(boardDto.toEntity()).getArticleNumber();
 		//save()함수->Jpa에서 정의. DB의 INSERT, UPDATE 담당
 	}
@@ -29,6 +29,7 @@ public class BoardService {
 	/* 컨트롤러와 서비스간 데이터 전달은 dto 객체로 하기 위해서
 	*  레포지토리에서 가져온 엔티티를 반복문을 통해 dto로 변환
 	* */
+	/* 게시글 목록 가져오기 */
 	@Transactional
 	public List<BoardDto> getBoardList() {
 		List<BoardEntity> boardEntities = boardRepository.findAll();
@@ -45,6 +46,13 @@ public class BoardService {
 	}
 
 
+	/* 게시글 내용보기 */
+	public BoardDto getPost(Long articleNumber) {
+		Optional<BoardEntity> boardEntityWrapper  = boardRepository.findById(articleNumber); //PK값을 where조건으로 해서 데이터 가져오는 메서드
+		BoardEntity boardEntity = boardEntityWrapper.get(); // get() : 레퍼로부터 엔티티를빼옴
+		return convertEntityToDto(boardEntity);
+	}
+
 
 	private BoardDto convertEntityToDto(BoardEntity boardEntity) {
 		return BoardDto.builder()
@@ -55,5 +63,4 @@ public class BoardService {
 				.createdDate(boardEntity.getCreatedDate())
 				.build();
 	}
-
 }
