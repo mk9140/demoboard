@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class BoardEntity extends TimeEntity{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // null 입력된 경우 DB가 알아서 auto_increment 해줌
 	@Column(name = "articleNumber")
 	private Long articleNumber; //글번호 (식별자)
 

@@ -2,20 +2,21 @@ package com.boardex.demo.service;
 
 
 import com.boardex.demo.domain.entity.BoardEntity;
-import com.boardex.demo.domain.repository.boardRepositoryInterface;
+import com.boardex.demo.domain.repository.BoardRepositoryInterface;
 import com.boardex.demo.dto.BoardDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class BoardService {
 
-	private boardRepositoryInterface boardRepository;
+	private BoardRepositoryInterface boardRepository;
 
 	@Transactional //선언적 트랜잭션. 트랜잭션 적용하는 어노테이션
 	public Long savePost(BoardDto boardDto) {
@@ -36,6 +37,7 @@ public class BoardService {
 
 		for (BoardEntity boardEntity : boardEntities) {
 			boardDtoList.add(this.convertEntityToDto(boardEntity));
+			Collections.reverse(boardDtoList); // 나중에 쓴 글이 위로 올라오도록 역정렬
 		}
 
 		return boardDtoList;
@@ -49,7 +51,7 @@ public class BoardService {
 				.title(boardEntity.getTitle())
 				.content(boardEntity.getContent())
 				.writer(boardEntity.getWriter())
-//				.createdDate(boardEntity.getCreatedDate())
+				.createdDate(boardEntity.getCreatedDate())
 				.build();
 	}
 

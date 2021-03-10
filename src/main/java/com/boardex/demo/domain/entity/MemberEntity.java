@@ -15,12 +15,16 @@ public class MemberEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+
+	@Column(name = "userId", length = 30, nullable = false)
 	private String userId;
 
-	@Column(length = 100, nullable = false)
+	@Column(name = "userPassword",length = 30, nullable = false)
 	private String userPassword;
 
-	@Column(length = 100, nullable = false)
+	@Column(name = "userName",length = 30, nullable = false)
 	private String userName;
 
 
