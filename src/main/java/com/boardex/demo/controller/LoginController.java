@@ -18,7 +18,7 @@ public class LoginController {
 	private final MemberService memberService;
 
 	// 로그인 페이지
-	@GetMapping("/")
+	@GetMapping("")
 	public String toLogin() {
 		return "/index";
 
@@ -32,16 +32,16 @@ public class LoginController {
 //	}
 
 	//TEST
-	@GetMapping("/user/login/result")
+	@GetMapping("user/login/result")
 		 public String dispLogout() {
-     return "/test";
+     return "test";
  	}
 
 
 
 
 	// 회원가입 페이지
-	@GetMapping("/member/signup")
+	@GetMapping("member/signup")
 	public String toSingup(MemberDto memberDto) {
 		return "/login/signup";
 	}
