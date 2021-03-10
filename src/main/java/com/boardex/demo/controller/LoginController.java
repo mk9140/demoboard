@@ -43,7 +43,7 @@ public class LoginController {
 	// 회원가입 페이지
 	@GetMapping("/member/signup")
 	public String toSingup(MemberDto memberDto) {
-		return "/login/signup";
+		return "login/signup";
 	}
 
 	// 회원가입 처리
@@ -62,7 +62,7 @@ public class LoginController {
 				model.addAttribute(key, validatorResult.get(key));
 			}
 			// 그대로 회원가입 페이지에 머무르기
-			return "/login/signup";
+			return "login/signup";
 		}
 
 		//회원가입 로직 실행
