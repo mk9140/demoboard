@@ -18,9 +18,9 @@ public class LoginController {
 	private final MemberService memberService;
 
 	// 로그인 페이지
-	@GetMapping("")
+	@GetMapping("/")
 	public String toLogin() {
-		return "/index";
+		return "index";
 
 	}
 
@@ -32,7 +32,7 @@ public class LoginController {
 //	}
 
 	//TEST
-	@GetMapping("user/login/result")
+	@GetMapping("/user/login/result")
 		 public String dispLogout() {
      return "test";
  	}
@@ -41,12 +41,12 @@ public class LoginController {
 
 
 	// 회원가입 페이지
-	@GetMapping("member/signup")
+	@GetMapping("/member/signup")
 	public String toSingup(MemberDto memberDto) {
 		return "/login/signup";
 	}
 
-/*	// 회원가입 처리
+	// 회원가입 처리
 	@PostMapping("/member/signup")
 	public String execSignup(@Valid MemberDto memberDto, Errors errors, Model model) {
 		// @Vaild ? html입력값이 dto클래스로 캡슐화되어 넘어올 때, 유효성 체크 지시하는 어노테이션
@@ -71,7 +71,7 @@ public class LoginController {
 
 		//로그인화면으로 이동
 		return "redirect:/login";
-	}*/
+	}
 
 
 
