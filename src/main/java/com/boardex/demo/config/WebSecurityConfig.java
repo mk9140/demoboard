@@ -48,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				//권한 없으면 볼 url (기본화면 /)
 				.formLogin()
-//				.loginPage("/member/login")
-				.usernameParameter("userName").passwordParameter("userPassword")
+				.loginPage("/member/login")
+				.usernameParameter("userId").passwordParameter("userPassword")
 				.defaultSuccessUrl("/board/list")
 //				.defaultSuccessUrl("/user/login/result")
 				.and()
@@ -68,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.passwordEncoder(passwordEncoder())
 				//인증 처리
 				//출력결과는 사용자이름/비번/enabled로 순서를 지켜야 한다
-				.usersByUsernameQuery("select userName as username,userPassword as password,enabled "
+				.usersByUsernameQuery("select userId as username,userPassword as password,enabled "
 						+ "from member "
 						+ "where userId = ?")
 				//권한 처리

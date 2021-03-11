@@ -24,12 +24,12 @@ public class LoginController {
 
 	}
 
-//
-//	@GetMapping("/member/login")
-//	public String dispLogin() {
-//		return "/login/login";
-//
-//	}
+
+	@GetMapping("/member/login")
+	public String dispLogin() {
+		return "/login/login";
+
+	}
 
 	//TEST
 	@GetMapping("/user/login/result")
@@ -70,7 +70,7 @@ public class LoginController {
 		System.out.println("rst = " + rst);
 
 		//로그인화면으로 이동
-		return "redirect:/login";
+		return "redirect:/member/login";
 	}
 
 
