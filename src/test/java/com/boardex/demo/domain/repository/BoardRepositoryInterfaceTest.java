@@ -1,12 +1,16 @@
 package com.boardex.demo.domain.repository;
 
 import com.boardex.demo.domain.entity.BoardEntity;
+import com.boardex.demo.dto.BoardDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Optional;
 
@@ -31,10 +35,9 @@ class BoardRepositoryInterfaceTest {
 
 		//when : DB에 저장을 하고, 다시 받아온 articleNumber가
 		resultArticleNumber = boardRepository.save(boardEntity).getArticleNumber();
-
-
 	}
 
+/*
 	@Test
 	@DisplayName("글 저장 테스트")
 	public void savePost() {
@@ -54,11 +57,48 @@ class BoardRepositoryInterfaceTest {
 		assertThat("test title").isEqualTo(result.getTitle());
 		assertThat("test content").isEqualTo(result.getContent());
 		assertThat("test writer").isEqualTo(result.getWriter());
+	}
+*/
+
+	@Test
+	@DisplayName("ポスト修正")
+	void editPost(){
+		// ポスト作成と同じ仕組み
+		// 既存存在するポストにPKも一緒に入力するとUPDATE
+		boardEntity = BoardEntity.builder()
+				.content("edit content")
+				.title("edit title")
+				.writer("edit writer")
+				.articleNumber(resultArticleNumber)
+				.build();
+		boardRepository.save(boardEntity);
 
 
-
+		Optional<BoardEntity> boardEntityWrapper  = boardRepository.findById(resultArticleNumber);
+		BoardEntity result = boardEntityWrapper.get();
+		assertThat(resultArticleNumber).isEqualTo(result.getArticleNumber());
+		assertThat("test title").isNotEqualTo(result.getTitle());
+		assertThat("test content").isNotEqualTo(result.getContent());
+		assertThat("test writer").isNotEqualTo(result.getWriter());
+		assertThat("edit title").isEqualTo(result.getTitle());
+		assertThat("edit content").isEqualTo(result.getContent());
+		assertThat("edit writer").isEqualTo(result.getWriter());
 	}
 
+
+	@Test
+	@DisplayName("ポスト削除")
+	public void postDelete(){
+		// ポスト削除
+		boardRepository.deleteById(resultArticleNumber);
+
+		// 削除されたポストのPKで検査してみる
+		Optional<BoardEntity> result  = boardRepository.findById(resultArticleNumber);
+
+		// 検査結果無し
+		assertThat(result).isEqualTo(Optional.empty());
+
+	}
 
 
 }

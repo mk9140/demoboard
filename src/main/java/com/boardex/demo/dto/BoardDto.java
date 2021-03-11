@@ -22,14 +22,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BoardDto {
 
-	private Long articleNumber; //글번호 (식별자)
-	private String writer; // 작성자(유저id)
-	private String title; // 글제목
-	private String content; // 글 내용
-	private LocalDateTime createdDate; // 글 최초 작성일
-	private LocalDateTime modifiedDate; // 글 수정일
+	private Long articleNumber;
+	private String writer;
+	private String title;
+	private String content;
+	private LocalDateTime createdDate;
+	private LocalDateTime modifiedDate;
 
-	/* DTO에서 필요한 부분을 빌더패턴 통해 Entity로 만듦*/
 	public BoardEntity toEntity() {
 		BoardEntity boardEntity = BoardEntity.builder()
 				.articleNumber(articleNumber)

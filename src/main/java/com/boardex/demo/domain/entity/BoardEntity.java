@@ -14,20 +14,20 @@ import javax.persistence.*;
 public class BoardEntity extends TimeEntity{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // null 입력된 경우 DB가 알아서 auto_increment 해줌
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //
 	@Column(name = "articleNumber")
-	private Long articleNumber; //글번호 (식별자)
+	private Long articleNumber;
 
 	@Column(name = "writer", length = 100, nullable = false)
-	private String writer; // 작성자(유저id)
+	private String writer;
 
 	@Column(name = "title", length = 100, nullable = false)
-	private String title; // 글제목
+	private String title;
 
 	@Column(name = "content",columnDefinition = "TEXT", nullable = false)
-	private String content; // 글 내용
+	private String content;
 
-	@Builder // @Setter대신 빌더패턴을 사용함
+	@Builder
 	public BoardEntity(Long articleNumber, String writer, String title, String content) {
 		this.articleNumber = articleNumber;
 		this.writer = writer;

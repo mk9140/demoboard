@@ -17,7 +17,7 @@ public class BoardController {
 	private BoardService boardService;
 
 
-	/* 글 목록 페이지 */
+	/* 遷移 -  掲示板ポストのリスト画面 */
 	@GetMapping("/board/list")
 	public String dispList(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
 		List<BoardDto> boardList = boardService.getBoardList(pageNum);
@@ -33,14 +33,14 @@ public class BoardController {
 		return "board/list";
 	}
 
-	/* 글 작성 페이지 */
+	/* 遷移 - 書き込み画面 */
 	@GetMapping("/board/post")
 	public String dispWrite() {
 		System.out.println("BoardController.dispWrite");
 		return "board/write";
 	}
 
-	/* 글 작성 처리 */
+	/* 実行 - 書き込み */
 	@PostMapping("/board/post")
 	public String excWrite(BoardDto boardDto) {
 		System.out.println("BoardController.excWrite");
@@ -48,7 +48,7 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	/* 글 읽기 페이지 */
+	/* 遷移 - 掲示板ポストの確認 */
 	@GetMapping("/board/list/{articleNumber}")
 	public String detail(@PathVariable("articleNumber") Long articleNumber, Model model) {
 		BoardDto boardDto = boardService.getPost(articleNumber);
@@ -57,7 +57,7 @@ public class BoardController {
 		return "board/read";
 	}
 
-	/* 글 수정 페이지 */
+	/* 遷移 - 掲示板ポストの修正画面 */
 	@GetMapping("/board/edit/{articleNumber}")
 	public String editPost(@PathVariable("articleNumber") Long articleNumber, Model model) {
 		BoardDto boardDto = boardService.getPost(articleNumber);
@@ -66,7 +66,7 @@ public class BoardController {
 		return "board/edit";
 	}
 
-	/* 글 수정 처리 */
+	/* 実行 - 掲示板ポストの修正 */
 	//	@PutMapping("/board/edit/{articleNumber}")
 	// @PutMappingでは実行不可の為、明示的マッピング
 	@RequestMapping(value = "/board/edit/{articleNumber}", produces = "application/json",  method=RequestMethod.PUT)
@@ -76,7 +76,7 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	/* 글 삭제 처리 */
+	/*  実行 - 掲示板ポストの削除 */
 	@RequestMapping(value = "/board/{articleNumber}", produces = "application/json",  method=RequestMethod.DELETE)
 	public String excDelete(@PathVariable("articleNumber") Long articleNumberBoardDto) {
 		boardService.deletePost(articleNumberBoardDto);

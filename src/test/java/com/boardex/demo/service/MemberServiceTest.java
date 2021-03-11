@@ -152,6 +152,9 @@ class MemberServiceTest {
 		}
 
 		Assertions.assertThat(messages).contains(userIdBlankMsg, userPasswordBlankMsg,userNameBlankMsg);
-
 	}
+
+
+
+
 }

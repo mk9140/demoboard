@@ -19,13 +19,14 @@ import java.util.Map;
 public class LoginController {
 	private final MemberService memberService;
 
-	// 로그인 페이지
+	// 遷移 - 初期画面
 	@GetMapping("/")
 	public String toLogin() {
 		return "index";
 
 	}
 
+	// 遷移 - ログイン画面
 	@GetMapping("/member/login")
 	public String dispLogin() {
 		return "login/login";
@@ -33,14 +34,14 @@ public class LoginController {
 	}
 
 
-	// 회원가입 페이지
+	// 遷移 - 会員登録画面
 	@GetMapping("/member/signup")
 	public String toSingup(MemberDto memberDto) {
 		return "login/signup";
 	}
 
 
-
+	// 実行 - 会員ID重複確認
 	@ResponseBody
 	@PostMapping(value="/member/checkId")
 	public boolean execIdCheck( MemberDto memberDto) {
@@ -51,30 +52,31 @@ public class LoginController {
 
 
 
-	// 회원가입 처리
+	// 実行 - 会員登録
 	@PostMapping("/member/signup")
 	public String execSignup(@Valid MemberDto memberDto, Errors errors, Model model) {
-		// @Vaild ? html입력값이 dto클래스로 캡슐화되어 넘어올 때, 유효성 체크 지시하는 어노테이션
-		// Errors ? 유효성체크 결과 오류있으면 그에 대한 정보 저장
+		// @Vaild ? 有効性チェックをおこなうことを指示するアノテーション
+		// Errors ? 有効性チェックの結果、エラーを格納
 
-		if (errors.hasErrors()) { // hasErrors() 유효성체크에서 에러가 있는 경우
-			// 회원가입 실패시, 입력 데이터는 유지하면서
+		//有効性エラーある場合
+		if (errors.hasErrors()) { //
+			// 記入データは保存
 			model.addAttribute("memberDto", memberDto);
 
-			// 유효성 통과 못한 필드와 메시지를 핸들링하여 메세지로 표시해줌
+			// エラーハンドリング
 			Map<String, String> validatorResult = memberService.validationHandling(errors);
 			for (String key : validatorResult.keySet()) {
 				model.addAttribute(key, validatorResult.get(key));
 			}
-			// 그대로 회원가입 페이지에 머무르기
+			// 会員登録画面へ遷移
 			return "login/signup";
 		}
 
-		//회원가입 로직 실행
+		//会員登録を行う
 		String rst = memberService.memberInsert(memberDto);
 		System.out.println("rst = " + rst);
 
-		//로그인화면으로 이동
+		//ログイン画面へ遷移
 		return "redirect:/member/login";
 	}
 

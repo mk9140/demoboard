@@ -34,8 +34,6 @@ public class MemberDto {
 
 	private String role;
 
-
-	/* DTO에서 필요한 부분을 Entity로 만듦*/
 	public MemberEntity toEntity() {
 		MemberEntity memberEntity = MemberEntity.builder()
 				.id(id)
@@ -47,10 +45,6 @@ public class MemberDto {
 				.build();
 		return memberEntity;
 	}
-
-
-//	private List<RoleEntity> roles = new ArrayList<>();
-
 
 	@Builder
 	public MemberDto(Long id, String userId, String userPassword,String userName, boolean enabled, String  role) {
