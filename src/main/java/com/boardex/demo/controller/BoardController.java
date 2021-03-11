@@ -19,9 +19,17 @@ public class BoardController {
 
 	/* 글 목록 페이지 */
 	@GetMapping("/board/list")
-	public String dispList(Model model) {
-		List<BoardDto> boardList = boardService.getBoardList();
+	public String dispList(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
+		List<BoardDto> boardList = boardService.getBoardList(pageNum);
+		Integer[] pageList = boardService.getPageList(pageNum);
+		model.addAttribute("pageList", pageList);
 		model.addAttribute("boardList", boardList);
+		model.addAttribute("activePage", pageNum);
+
+		model.addAttribute("prevPage", pageNum);
+		model.addAttribute("nextPage", pageNum);
+
+
 		return "board/list";
 	}
 
@@ -75,5 +83,8 @@ public class BoardController {
 		log.info("実行/削除 ");
 		return "redirect:/board/list";
 	}
+
+
+
 
 }

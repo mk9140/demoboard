@@ -4,49 +4,75 @@
     <meta charset="UTF-8">
     <title>게시판</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-   	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
 
-<!--    <link rel="stylesheet" th:href="@{/css/board.css}">-->
+    <!--    <link rel="stylesheet" th:href="@{/css/board.css}">-->
 </head>
 <body>
 
 
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th class="one wide">번호</th>
-            <th class="ten wide">글제목</th>
-            <th class="two wide">작성자</th>
-            <th class="three wide">작성일</th>
-        </tr>
-        </thead>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th class="one wide">번호</th>
+        <th class="ten wide">글제목</th>
+        <th class="two wide">작성자</th>
+        <th class="three wide">작성일</th>
+    </tr>
+    </thead>
 
-        <tbody>
-        <!-- CONTENTS !-->
-        <tr th:each="board : ${boardList}">
-            <td>
-                <span th:text="${board.articleNumber}"></span>
-            </td>
-            <td>
-                <!-- 글번호를 통해 글 내용 볼 수 있도록하기위해    -->
-                <a th:href="@{'/board/list/' + ${board.articleNumber}}">
-                    <span th:text="${board.title}"></span>
-                </a>
-            </td>
-            <td>
-                <span th:text="${board.writer}"></span>
-            </td>
-            <td>
-                <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div>
+    <tbody>
+    <!-- CONTENTS !-->
+    <tr th:each="board : ${boardList}">
+        <td>
+            <span th:text="${board.articleNumber}"></span>
+        </td>
+        <td>
+            <!-- 글번호를 통해 글 내용 볼 수 있도록하기위해    -->
+            <a th:href="@{'/board/list/' + ${board.articleNumber}}">
+                <span th:text="${board.title}"></span>
+            </a>
+        </td>
+        <td>
+            <span th:text="${board.writer}"></span>
+        </td>
+        <td>
+            <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!--<div>-->
+<!--    <span th:each="pageNum : ${pageList}" th:inline="text">-->
+<!--        <a th:href="@{'/board/list/?page=' + ${pageNum}}">[[${pageNum}]]</a>-->
+<!--    </span>-->
+<!--</div>-->
+
+<nav aria-label="...">
+    <ul class="pagination">
+
+<!--        <li class="page-item disabled">-->
+<!--            <span class="page-link">-->
+<!--                <a th:href="@{'/board/list?page=' + ${pageList}}">Previous</a>-->
+<!--            </span>-->
+<!--        </li>-->
+
+        <li th:each="pageNum : ${pageList}" th:if="${pageNum != null}" aria-current="page" th:class="${pageNum == activePage}? 'page-item active' : 'page-item'" >
+            <span th:inline="text">
+                <a class="page-link" th:href="@{'/board/list?page=' + ${pageNum}}">[[${pageNum}]]</a>
+            </span>
+        </li>
+
+<!--        <li class="page-item">-->
+<!--            <a class="page-link" href="#">Next</a>-->
+<!--        </li>-->
+    </ul>
+</nav>
+
+<div>
     <a th:href="@{/board/post}"  class="btn btn-primary">글쓰기</a>
-
-    </div>
+</div>
 </body>
 </html>
