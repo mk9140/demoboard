@@ -5,6 +5,7 @@ import com.boardex.demo.domain.entity.BoardEntity;
 import com.boardex.demo.domain.repository.BoardRepositoryInterface;
 import com.boardex.demo.dto.BoardDto;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class BoardService {
 
-	private BoardRepositoryInterface boardRepository;
+	private final BoardRepositoryInterface boardRepository;
 
 	@Transactional //선언적 트랜잭션. 트랜잭션 적용하는 어노테이션
 	public Long savePost(BoardDto boardDto) {
@@ -32,14 +33,14 @@ public class BoardService {
 	/* 게시글 목록 가져오기 */
 	@Transactional
 	public List<BoardDto> getBoardList() {
-		List<BoardEntity> boardEntities = boardRepository.findAll();
+		/* Sort.by(Sort.Direction.DESC, "[基準カラム名]" でポスト目録の並べ替え */
+		List<BoardEntity> boardEntities = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "articleNumber"));
 		List<BoardDto> boardDtoList = new ArrayList<>();
 
 		if (boardEntities.isEmpty()) return boardDtoList;
 
 		for (BoardEntity boardEntity : boardEntities) {
 			boardDtoList.add(this.convertEntityToDto(boardEntity));
-			Collections.reverse(boardDtoList); // 나중에 쓴 글이 위로 올라오도록 역정렬
 		}
 
 		return boardDtoList;
@@ -54,6 +55,13 @@ public class BoardService {
 	}
 
 
+	/* 게시글 삭제 */
+	@Transactional
+	public void deletePost(Long articleNumberBoardDto) {
+		boardRepository.deleteById(articleNumberBoardDto);
+	}
+
+
 	private BoardDto convertEntityToDto(BoardEntity boardEntity) {
 		return BoardDto.builder()
 				.articleNumber(boardEntity.getArticleNumber())
@@ -63,4 +71,5 @@ public class BoardService {
 				.createdDate(boardEntity.getCreatedDate())
 				.build();
 	}
+
 }
