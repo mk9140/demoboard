@@ -8,4 +8,5 @@ import java.util.Optional;
 
 
 public interface MemberRepositoryInterface extends JpaRepository<MemberEntity, Long> {
+	MemberEntity findByUserId(String userId);
 }

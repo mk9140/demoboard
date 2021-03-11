@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -24,20 +26,11 @@ public class LoginController {
 
 	}
 
-
 	@GetMapping("/member/login")
 	public String dispLogin() {
 		return "login/login";
 
 	}
-
-	//TEST
-	@GetMapping("/user/login/result")
-		 public String dispLogout() {
-     return "test";
- 	}
-
-
 
 
 	// 회원가입 페이지
@@ -45,6 +38,18 @@ public class LoginController {
 	public String toSingup(MemberDto memberDto) {
 		return "login/signup";
 	}
+
+
+
+	@ResponseBody
+	@PostMapping(value="/member/checkId")
+	public boolean execIdCheck( MemberDto memberDto) {
+		boolean isExist=true;
+		isExist = memberService.checkId(memberDto.getUserId());
+		return isExist;
+	}
+
+
 
 	// 회원가입 처리
 	@PostMapping("/member/signup")

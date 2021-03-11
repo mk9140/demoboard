@@ -48,6 +48,12 @@ public class MemberService {
 	}
 
 
-
-
+	public boolean checkId(String userId) {
+		boolean isExist = true;
+		MemberEntity memberEntity = memberRepository.findByUserId(userId);
+		if (memberEntity == null) {
+			isExist = false;
+		}
+		return isExist;
+	}
 }

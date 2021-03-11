@@ -4,8 +4,9 @@
 	<meta charset="UTF-8">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<title>회원등록</title>
+
 </head>
 <body>
 <h1>회원등록</h1>
@@ -14,7 +15,7 @@
 <form th:action="@{/member/signup}" method="post" th:modelAttribute="memberDto">
 	<div class="form-group row mb-3">
 		<div class="col-xs-3">
-			<input class="form-control w-25" type="text" name="userId" th:value="${memberDto.userId}" placeholder="아이디를 입력해주세요."  required>
+			<input class="form-control w-25" id="userId" type="text" name="userId" th:value="${memberDto.userId}" placeholder="아이디를 입력해주세요."  required oninput="checkId()">
 		</div>
 		<div>
 			<span th:text="${valid_userId}"></span><!--	에러메시지 표시부	-->
@@ -38,8 +39,37 @@
 
 	</div>
 	<br>
-	<button class="btn btn-info">회원등록</button>
+	<button class="btn btn-info" id="signupBtn" onclick="dataSend()">회원등록</button>
 	</div>
+	<br>
+	<p style="color: red" id="idError"></p>
+
+
+
+	<script>
+		function checkId() {
+			var inputtedId = $('input[name=userId]').val();
+			$.ajax({
+    			type:"POST",
+				data : {
+    				userId : inputtedId
+				},
+				url : "/member/checkId",
+				success : function(data) {
+					console.log('Func: success, #59, data ->', data);
+					if(data==false) {
+						$("#signupBtn").prop("disabled", false);
+						$("#signupBtn").css("filter", "grayscale(0)");
+						$("#idError").text("")
+					} else {
+						$("#signupBtn").prop("disabled", true);
+						$("#signupBtn").css("filter", "grayscale(1)");
+						$("#idError").text("이미 존재하는 아이디 입니다.")
+					}
+				}
+			});
+		}
+	</script>
 </form>
 </body>
 </html>
