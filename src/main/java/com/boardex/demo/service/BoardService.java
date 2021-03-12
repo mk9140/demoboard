@@ -21,22 +21,22 @@ public class BoardService {
 
 	private final BoardRepositoryInterface boardRepository;
 
-	private static final int DISPLAY_PAGE_LENGTH = 300; // pagination 블럭 표시갯수
-	private static final int DISPLAY_ENTITY_COUNT = 4; //페이지당 게시글 수
+	private static final int DISPLAY_PAGE_LENGTH = 300; // pagination
+	private static final int DISPLAY_ENTITY_COUNT = 4; // 画面別表示するポストの数
 
 
 
-	@Transactional //선언적 트랜잭션. 트랜잭션 적용하는 어노테이션
+	@Transactional //トランザクションを適用するアノテーション
 	public Long savePost(BoardDto boardDto) {
 		return boardRepository.save(boardDto.toEntity()).getArticleNumber();
-		//save()함수->Jpa에서 정의. DB의 INSERT, UPDATE 담당
+		//save()　->DBのINSERT、UPDATE担当
 	}
 
 
 	/* 컨트롤러와 서비스간 데이터 전달은 dto 객체로 하기 위해서
 	 *  레포지토리에서 가져온 엔티티를 반복문을 통해 dto로 변환
 	 * */
-	/* 게시글 목록 가져오기 */
+	/* 処理 - 掲示板ポストのリスト */
 	@Transactional
 	public List<BoardDto> getBoardList(Integer pageNum) {
 		/* Sort.by(Sort.Direction.DESC, "[基準カラム名]" でポスト目録の並べ替え */
@@ -55,7 +55,7 @@ public class BoardService {
 
 	@Transactional
 	public Long getBoardCount() {
-		// 엔티티 갯수(DB의 테이블의 행 수) 반환
+		// エンティティの数（DB内のテーブルの行数）を返す
 		return boardRepository.count();
 	}
 

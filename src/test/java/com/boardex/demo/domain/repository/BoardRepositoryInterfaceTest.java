@@ -1,13 +1,18 @@
 package com.boardex.demo.domain.repository;
 
 import com.boardex.demo.domain.entity.BoardEntity;
+import com.boardex.demo.dto.BoardDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,6 +27,8 @@ class BoardRepositoryInterfaceTest {
 	Long resultArticleNumber;
 	@BeforeEach
 	public void setUp() {
+		boardRepository.deleteAll();
+
 		//given : html로부터 입력받으면
 		BoardEntity boardEntity = BoardEntity.builder()
 				.content("test content")
@@ -32,7 +39,13 @@ class BoardRepositoryInterfaceTest {
 		//when : DB에 저장을 하고, 다시 받아온 articleNumber가
 		resultArticleNumber = boardRepository.save(boardEntity).getArticleNumber();
 	}
+	@AfterEach
+	public void resetRepo (){
+		boardRepository.deleteAll();
 
+	}
+
+/*
 	@Test
 	@DisplayName("ポスト格納")
 	public void savePost() {
@@ -94,5 +107,196 @@ class BoardRepositoryInterfaceTest {
 
 	}
 
+*/
 
+
+	@Test
+	@DisplayName("ポスト検索 - タイトル")
+	public void searchTitle(){
+		List<BoardDto> boardDtoList = new ArrayList<>();
+		List<BoardEntity> boardEntities;
+		//ポスト入力
+		boardEntity = BoardEntity.builder()
+				.content("content1")
+				.title("abcdefg")
+				.writer("taro")
+				.build();
+		boardRepository.save(boardEntity);
+
+		boardEntity = BoardEntity.builder()
+				.content("content2")
+				.title("abcdQWER")
+				.writer("tanaka")
+				.build();
+		boardRepository.save(boardEntity);
+
+		boardEntity = BoardEntity.builder()
+				.content("content3")
+				.title("zxcvdQWER")
+				.writer("takahashi")
+				.build();
+		boardRepository.save(boardEntity);
+
+
+		//タイトルに"abcdefg"が含まれているポスト
+		boardEntities  = boardRepository.findByTitleContaining("abcdefg" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(1);
+		boardDtoList.clear();
+
+
+		//タイトルに"abcd"が含まれているポスト
+		boardEntities  = boardRepository.findByTitleContaining("abcd" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(2);
+		boardDtoList.clear();
+
+		//タイトルに"QWER"が含まれているポスト
+		boardEntities  = boardRepository.findByTitleContaining("QWER" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(2);
+		boardDtoList.clear();
+
+		//タイトルに"d"が含まれているポスト
+		boardEntities  = boardRepository.findByTitleContaining("d" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(3);
+		boardDtoList.clear();
+	}
+
+
+	@Test
+	@DisplayName("ポスト検索 - 作成者")
+	public void searchWriter(){
+		List<BoardDto> boardDtoList = new ArrayList<>();
+		List<BoardEntity> boardEntities;
+		//ポスト入力
+		boardEntity = BoardEntity.builder()
+				.content("content1")
+				.title("abcdefg")
+				.writer("nishida")
+				.build();
+		boardRepository.save(boardEntity);
+
+		boardEntity = BoardEntity.builder()
+				.content("content2")
+				.title("abcdQWER")
+				.writer("tanaka")
+				.build();
+		boardRepository.save(boardEntity);
+
+		boardEntity = BoardEntity.builder()
+				.content("content3")
+				.title("zxcvdQWER")
+				.writer("takahashi")
+				.build();
+		boardRepository.save(boardEntity);
+
+
+		//作成者名に"nishida"が含まれているポスト
+		boardEntities  = boardRepository.findByWriterContaining("nishida" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(1);
+		boardDtoList.clear();
+
+
+		//タイトルに"shi"が含まれているポスト
+		boardEntities  = boardRepository.findByWriterContaining("shi" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(2);
+		boardDtoList.clear();
+
+
+		//タイトルに"ta"が含まれているポスト
+		boardEntities  = boardRepository.findByWriterContaining("ta" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(2);
+		boardDtoList.clear();
+
+	}
+
+	@Test
+	@DisplayName("ポスト検索 - 内容")
+	public void searchContent(){
+		List<BoardDto> boardDtoList = new ArrayList<>();
+		List<BoardEntity> boardEntities;
+		//ポスト入力
+		boardEntity = BoardEntity.builder()
+				.content("これはテストです")
+				.title("abcdefg")
+				.writer("nishida")
+				.build();
+		boardRepository.save(boardEntity);
+
+		boardEntity = BoardEntity.builder()
+				.content("テストする方が良い")
+				.title("abcdQWER")
+				.writer("tanaka")
+				.build();
+		boardRepository.save(boardEntity);
+
+		boardEntity = BoardEntity.builder()
+				.content("これが良さそう")
+				.title("zxcvdQWER")
+				.writer("takahashi")
+				.build();
+		boardRepository.save(boardEntity);
+
+
+		//作成者名に"テスト"が含まれているポスト
+		boardEntities  = boardRepository.findByContentContaining("テスト" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(2);
+		boardDtoList.clear();
+
+
+		//作成者名に"良"が含まれているポスト
+		boardEntities  = boardRepository.findByContentContaining("良" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(2);
+		boardDtoList.clear();
+
+		//作成者名に"良"が含まれているポスト
+		boardEntities  = boardRepository.findByContentContaining("良さ" , Sort.by(Sort.Direction.DESC, "articleNumber"));
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		assertThat(boardDtoList.size()).isEqualTo(1);
+		boardDtoList.clear();
+	}
+
+
+
+	private BoardDto convertEntityToDto(BoardEntity boardEntity) {
+		return BoardDto.builder()
+				.articleNumber(boardEntity.getArticleNumber())
+				.title(boardEntity.getTitle())
+				.content(boardEntity.getContent())
+				.writer(boardEntity.getWriter())
+				.createdDate(boardEntity.getCreatedDate())
+				.build();
+	}
 }

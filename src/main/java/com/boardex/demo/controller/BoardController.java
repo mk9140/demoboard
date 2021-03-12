@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Log
 @Controller
@@ -90,6 +91,14 @@ public class BoardController {
 		List<BoardDto> boardDtoList = boardService.searchPosts(searchOption, keyword);
     	model.addAttribute("boardList", boardDtoList);
 		return "/board/list";
+
+	}
+
+	/* test */
+	@PostMapping("/board/pageCheck")
+	public void testfunc(@RequestBody String param ){
+
+		System.out.println("dddzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzd = " + param);
 
 	}
 
