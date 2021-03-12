@@ -90,7 +90,7 @@ public class BoardController {
 	public String exeSearch(@RequestParam(value="searchOption") int searchOption, @RequestParam(value="keyword") String keyword, Model model) {
 		List<BoardDto> boardDtoList = boardService.searchPosts(searchOption, keyword);
     	model.addAttribute("boardList", boardDtoList);
-		return "/board/list";
+		return "board/list";
 
 	}
 
