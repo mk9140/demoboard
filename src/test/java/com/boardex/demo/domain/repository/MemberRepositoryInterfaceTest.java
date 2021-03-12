@@ -50,6 +50,4 @@ class MemberRepositoryInterfaceTest {
 		result = memberRepository.findByUserId(testId03);
 		Assertions.assertThat(result).isNull();
 	}
-
-
 }

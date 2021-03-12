@@ -99,7 +99,31 @@ public class BoardService {
 		boardRepository.deleteById(articleNumberBoardDto);
 	}
 
+	@Transactional
+	public List<BoardDto> searchPosts(int searchOption, String keyword) {
+		List<BoardDto> boardDtoList = new ArrayList<>();
+		List<BoardEntity> boardEntities = new ArrayList<>();
+		switch (searchOption){
+			case 1: // title search
+				boardEntities  = boardRepository.findByTitleContaining(keyword , Sort.by(Sort.Direction.DESC, "articleNumber"));
+				break;
+			case 2:
+				boardEntities  = boardRepository.findByWriterContaining(keyword , Sort.by(Sort.Direction.DESC, "articleNumber"));
+				break;
+			case 3:
+				boardEntities  = boardRepository.findByContentContaining(keyword , Sort.by(Sort.Direction.DESC, "articleNumber"));
+				break;
+			default:
+				break;
 
+		}
+		if (boardEntities.isEmpty()) return boardDtoList;
+		for (BoardEntity boardEntity : boardEntities) {
+			boardDtoList.add(this.convertEntityToDto(boardEntity));
+		}
+		return boardDtoList;
+
+	}
 
 
 	private BoardDto convertEntityToDto(BoardEntity boardEntity) {
@@ -111,5 +135,6 @@ public class BoardService {
 				.createdDate(boardEntity.getCreatedDate())
 				.build();
 	}
+
 
 }

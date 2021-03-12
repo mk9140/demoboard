@@ -44,20 +44,15 @@
     </tr>
     </tbody>
 </table>
-<!--<div>-->
-<!--    <span th:each="pageNum : ${pageList}" th:inline="text">-->
-<!--        <a th:href="@{'/board/list/?page=' + ${pageNum}}">[[${pageNum}]]</a>-->
-<!--    </span>-->
-<!--</div>-->
 
 <nav aria-label="...">
     <ul class="pagination">
 
-<!--        <li class="page-item disabled">-->
-<!--            <span class="page-link">-->
-<!--                <a th:href="@{'/board/list?page=' + ${pageList}}">Previous</a>-->
-<!--            </span>-->
-<!--        </li>-->
+        <!--        <li class="page-item disabled">-->
+        <!--            <span class="page-link">-->
+        <!--                <a th:href="@{'/board/list?page=' + ${pageList}}">Previous</a>-->
+        <!--            </span>-->
+        <!--        </li>-->
 
         <li th:each="pageNum : ${pageList}" th:if="${pageNum != null}" aria-current="page" th:class="${pageNum == activePage}? 'page-item active' : 'page-item'" >
             <span th:inline="text">
@@ -65,13 +60,31 @@
             </span>
         </li>
 
-<!--        <li class="page-item">-->
-<!--            <a class="page-link" href="#">Next</a>-->
-<!--        </li>-->
+        <!--        <li class="page-item">-->
+        <!--            <a class="page-link" href="#">Next</a>-->
+        <!--        </li>-->
     </ul>
 </nav>
+<!--<form th:action="@{'/board/edit/' + ${boardDto.articleNumber}}" method="post">-->
+<form action="/board/search" method="GET">
+    <div class="input-group mb-3" style="width: 35%; float:left;">
+        <label class="input-group-text" th:for="searchOption">검색기준</label>
+        <select class="form-select" th:id="searchOption"  th:name="searchOption">
+            <option th:value="1" selected>제목</option>
+            <option  th:value="2">작성자</option>
+            <option  th:value="3">내용</option>
+        </select>
+        <input name="keyword" type="text" placeholder="검색어를 입력해주세요" style="width: 60%" required>
+    </div>
+    <div style="float: left;margin-left: 10px; margin-right: 20px">
+        <button class="btn btn-outline-success">검색</button>
+    </div>
+</form>
+<div style="margin-left: 20px">
+    <a th:href="@{/board/list}"  class="btn btn-outline-info">전체목록</a>
+</div>
 
-<div>
+<div style="clear: both">
     <a th:href="@{/board/post}"  class="btn btn-primary">글쓰기</a>
 </div>
 </body>

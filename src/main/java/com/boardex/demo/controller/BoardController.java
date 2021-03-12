@@ -17,7 +17,7 @@ public class BoardController {
 	private BoardService boardService;
 
 
-	/* 遷移 -  掲示板ポストのリスト画面 */
+//	/* 遷移 -  掲示板ポストのリスト画面 */
 	@GetMapping("/board/list")
 	public String dispList(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
 		List<BoardDto> boardList = boardService.getBoardList(pageNum);
@@ -84,6 +84,14 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
+	/* 検索 */
+	@GetMapping("/board/search")
+	public String exeSearch(@RequestParam(value="searchOption") int searchOption, @RequestParam(value="keyword") String keyword, Model model) {
+		List<BoardDto> boardDtoList = boardService.searchPosts(searchOption, keyword);
+    	model.addAttribute("boardList", boardDtoList);
+		return "/board/list";
+
+	}
 
 
 
