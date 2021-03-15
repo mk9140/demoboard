@@ -95,7 +95,7 @@ public class BoardController {
 
 	}
 
-	/* test */
+	/* ページング前・次ボタン用 */
 	@ResponseBody
 	@PostMapping("/board/pageCheck")
 	public Map<String, Integer> testfunc(@RequestBody int param ){
@@ -107,8 +107,6 @@ public class BoardController {
 
 		rstMap.putAll(prevEndPage);
 		rstMap.putAll(nextStartPage);
-
-		System.out.println("zzzzzzzzzzzzzzzzzzzzzzzzzz" + rstMap + "...........");
 		return rstMap ;
 
 	}
