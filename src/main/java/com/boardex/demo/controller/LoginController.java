@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Map;
 
 @Controller
@@ -80,7 +81,9 @@ public class LoginController {
 	}
 
 
-
-
-
+	/* ユーザーのIDをリターン */
+	@PostMapping("/member/getUserId")
+	@ResponseBody public String currentUserName(Principal principal) {
+		return principal.getName(); //ユーザーID
+	}
 }

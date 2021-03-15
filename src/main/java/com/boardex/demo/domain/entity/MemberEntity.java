@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -46,4 +44,5 @@ public class MemberEntity {
 		this.enabled = enabled;
 		this.role = role;
 	}
+
 }

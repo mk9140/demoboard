@@ -19,7 +19,7 @@ public class BoardService {
 
 	private final BoardRepositoryInterface boardRepository;
 
-	private static final int DISPLAY_PAGE_LENGTH = 5; // pagination
+	private static final int DISPLAY_PAGE_LENGTH = 5; // pagination Block
 	private static final int DISPLAY_ENTITY_COUNT = 4; // 画面別表示するポストの数
 
 
@@ -179,20 +179,11 @@ public class BoardService {
 		int currentBlock = curPageNum % DISPLAY_PAGE_LENGTH == 0 ?
 				curPageNum / DISPLAY_PAGE_LENGTH : (curPageNum / DISPLAY_PAGE_LENGTH) + 1;
 
-		int curStartPage = (currentBlock-1) * DISPLAY_PAGE_LENGTH + 1;
 
 		currentBlock++;
 		int nextStartPage = (currentBlock-1) * DISPLAY_PAGE_LENGTH + 1;
 		otherBlock.put("next", nextStartPage);
 
-		int endPage = curStartPage+DISPLAY_PAGE_LENGTH -1;
-		if (endPage > totalPage) {
-			endPage = totalPage;
-		}
-
-		if (nextStartPage > endPage){
-			nextStartPage = endPage;
-		}
 
 		otherBlock.put("total", totalPage);
 

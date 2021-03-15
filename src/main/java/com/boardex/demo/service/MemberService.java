@@ -4,6 +4,7 @@ import com.boardex.demo.domain.entity.MemberEntity;
 import com.boardex.demo.domain.repository.MemberRepositoryInterface;
 import com.boardex.demo.dto.MemberDto;
 import lombok.AllArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -53,4 +54,6 @@ public class MemberService {
 		}
 		return isExist;
 	}
+
+
 }

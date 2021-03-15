@@ -1,5 +1,6 @@
 package com.boardex.demo.config;
 
+import com.boardex.demo.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -87,4 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 								+"where userId = ? ");
 
 	}
+
+
+
 }

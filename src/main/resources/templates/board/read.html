@@ -5,6 +5,8 @@
 	<meta charset="UTF-8">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 	<title>ポスト確認</title>
 	<style>
         html,
@@ -48,7 +50,7 @@
 	<div class="row mt-3">
 		<div class="col-auto mr-auto"></div>
 		<div class="col-auto">
-			<a class="btn btn-info" th:href="@{'/board/edit/' + ${boardDto.articleNumber}}" role="button">修正</a>
+			<a  id="editBtn" class="btn btn-info" th:href="@{'/board/edit/' + ${boardDto.articleNumber}}" role="button">修正</a>
 		</div>
 		<div class="col-auto">
 			<form id="delete-form" th:action="@{'/board/' + ${boardDto.articleNumber}}" method="post">
@@ -57,7 +59,8 @@
 				<!--	* 一般的に、<input type="hidden">を使う	-->
 				<!--	delete -> @DeleteMappingを使ってコントロールが受信			-->
 				<input type="hidden" name="_method" value="delete"/>
-				<button id="delete-btn" type="submit" class="btn btn-danger">削除</button>
+				<button id="deleteBtn" type="submit" class="btn btn-danger" >削除</button>
+				<a href="javascript:history.back()" style="margin-left: 40px"  class="btn btn-primary ">戻る</a>
 			</form>
 		</div>
 	</div>
