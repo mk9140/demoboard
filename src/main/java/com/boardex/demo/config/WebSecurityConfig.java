@@ -1,6 +1,5 @@
 package com.boardex.demo.config;
 
-import com.boardex.demo.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.sql.DataSource;
 
 /*
- * 로그인시 회원 인증 처리
+ * ログイン認証処理
  * */
 
 @Configuration
@@ -23,7 +22,8 @@ import javax.sql.DataSource;
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final DataSource dataSource; // 어플리케이션 설정파일의 datasource부의 정보를 사용할 수 있게 주입
+	// アプリ設定ファイル(application.properties)のdatasource部の情報を使用できるように依存性収入
+	private final DataSource dataSource;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() { // 비밀번호 암호화
@@ -33,46 +33,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				//GET 메소드는 문제가 없는데 POST 메소드만 동작을 안한다,
-				//CSRF (Cross Site Request Forgery) 설정이 디폴트 (Default)로 활성화 (Enable)되기 때문이다.
-				//연습프로젝트에선 이를 비활성화 시킨다
-				//보안에 대한 공부도 필요
+				//GETは問題ないがPOST方式では動作しない時
+				//CSRF(Cross Site Request Forgery)設定がデフォルトとして活性化(Enable)されている為。
+				//これを無効かにする。
 				.csrf().disable()
 
 				.authorizeRequests()
-				// 누구나 접근가능한 페이지 설정
-				// 기본화면 (/), 회원가입화면 (/signup)은 권한없이 접근가능(permitAll())
+				// 掲示板関連画面は"MEMBER"権限必要→DBには"ROLE_MEMBER"形式で格納
 				.antMatchers("/board/*").hasRole("MEMBER")
+				// 誰でも確認できる画面（権限無し）設定
 				.antMatchers("/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
-				//권한 없으면 볼 url (기본화면 /)
+				//権限が無い時、ログイン画面へ遷移→ログイン処理を行うURL
 				.formLogin()
 				.loginPage("/member/login")
+				//ログイン時、ユーザーを特定できるようにしてする必要がある
 				.usernameParameter("userId").passwordParameter("userPassword")
+				//ログイン成功時、遷移する画面
 				.defaultSuccessUrl("/board/list")
-//				.defaultSuccessUrl("/user/login/result")
 				.and()
+				//ログアウト
 				.logout()
 				.logoutSuccessUrl("/")
 				.permitAll();
 	}
 
-	/* 인증처리 쿼리 */
+	/* 認証処理 */
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication()
-				// 설정파일에 등록된 DB사용
+				// 設定ファイルのDB情報使用
 				.dataSource(dataSource)
-				// 스프링이 인증처리 할 때 비밀번호 암호화를 알아서 해주도록
+				// パスワード暗号化
 				.passwordEncoder(passwordEncoder())
-				//인증 처리
-				//출력결과는 사용자이름/비번/enabled로 순서를 지켜야 한다
-				.usersByUsernameQuery("select userId as username,userPassword as password,enabled "
+				//ログインクエリー
+				//注意：出力結果は「ユーザーを特定できるカラム」/パスワード/enabled順
+				.usersByUsernameQuery("select userId,userPassword as password,enabled "
 						+ "from member "
 						+ "where userId = ?")
-				//권한 처리
-				//출력결과는 사용자이름/권한명
+				//権限クエリー
+				//出力結果は 「ユーザーを特定できるカラム」/権限名("ROLE_XXX")
 /*				.authoritiesByUsernameQuery("select member.userName "
 						+ "from userrole "
 						+ "inner join member "

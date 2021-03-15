@@ -31,22 +31,17 @@ public class BoardService {
 	}
 
 
-	/* 컨트롤러와 서비스간 데이터 전달은 dto 객체로 하기 위해서
-	 *  레포지토리에서 가져온 엔티티를 반복문을 통해 dto로 변환
-	 * */
+
 	/* 処理 - 掲示板ポストのリスト */
 	@Transactional
 	public List<BoardDto> getBoardList(Integer pageNum) {
 		/* Sort.by(Sort.Direction.DESC, "[基準カラム名]" でポスト目録の並べ替え */
-//		List<BoardEntity> boardEntities = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "articleNumber"));
 		Page<BoardEntity> page = boardRepository.findAll(PageRequest.of(pageNum - 1, DISPLAY_ENTITY_COUNT, Sort.by(Sort.Direction.DESC, "articleNumber")));
 		List<BoardEntity> boardEntities = page.getContent();
 		List<BoardDto> boardDtoList = new ArrayList<>();
 
-//		if (boardEntities.isEmpty()) return boardDtoList;
-
 		for (BoardEntity boardEntity : boardEntities) {
-			boardDtoList.add(this.convertEntityToDto(boardEntity));
+			boardDtoList.add(this.convertEntityToDto(boardEntity)); //Controller <--> Service 間のデータやり取りはDTOでするため
 		}
 		return boardDtoList;
 	}
@@ -83,32 +78,33 @@ public class BoardService {
 		return pageList;
 	}
 
-	/* 게시글 내용보기 */
+	/* ポスト確認 */
 	public BoardDto getPost(Long articleNumber) {
-		Optional<BoardEntity> boardEntityWrapper  = boardRepository.findById(articleNumber); //PK값을 where조건으로 해서 데이터 가져오는 메서드
-		BoardEntity boardEntity = boardEntityWrapper.get(); // get() : 레퍼로부터 엔티티를빼옴
+		Optional<BoardEntity> boardEntityWrapper  = boardRepository.findById(articleNumber); //PKの値をwhere句に入れてデータを取る。
+		BoardEntity boardEntity = boardEntityWrapper.get(); // get() :WrapperからEntityを取得
 		return convertEntityToDto(boardEntity);
 	}
 
 
-	/* 게시글 삭제 */
+	/* ポスト削除 */
 	@Transactional
 	public void deletePost(Long articleNumberBoardDto) {
 		boardRepository.deleteById(articleNumberBoardDto);
 	}
 
+	/* ポスト検索*/
 	@Transactional
 	public List<BoardDto> searchPosts(int searchOption, String keyword) {
 		List<BoardDto> boardDtoList = new ArrayList<>();
 		List<BoardEntity> boardEntities = new ArrayList<>();
 		switch (searchOption){
-			case 1: // title search
+			case 1: // 検索基準：タイトル
 				boardEntities  = boardRepository.findByTitleContaining(keyword , Sort.by(Sort.Direction.DESC, "articleNumber"));
 				break;
-			case 2:
+			case 2:// 検索基準：作成者
 				boardEntities  = boardRepository.findByWriterContaining(keyword , Sort.by(Sort.Direction.DESC, "articleNumber"));
 				break;
-			case 3:
+			case 3:// 検索基準：内容
 				boardEntities  = boardRepository.findByContentContaining(keyword , Sort.by(Sort.Direction.DESC, "articleNumber"));
 				break;
 			default:

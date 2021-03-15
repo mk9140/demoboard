@@ -18,16 +18,16 @@ import java.util.List;
 public class MemberDto {
 	private Long id; // for db
 
-	@NotBlank(message = "ID를 입력해 주세요")
-	@Pattern(regexp="(?=\\S+$).{1,10}", message = "ID는 공백없이 10자이내로 입력해 주세요")
+	@NotBlank(message = "IDを入力してください。")
+	@Pattern(regexp="(?=\\S+$).{1,10}", message = "IDはスペース無で10文字以内にしてください。")
 	private String userId;
 
-	@NotBlank(message = "비밀번호를 입력해 주세요")
-	@Pattern(regexp="(?=\\S+$).{1,10}", message = "비밀번호는 공백없이 10자이내로 입력해 주세요")
+	@NotBlank(message = "パスワード入力してください。")
+	@Pattern(regexp="(?=\\S+$).{1,10}", message = "パスワードはスペース無で10文字以内にしてください。")
 	private String userPassword;
 
-	@NotBlank(message = "이름을 입력해 주세요")
-	@Pattern(regexp="(?=\\S+$).{1,10}", message = "이름은 공백없이 10자이내로 입력해 주세요")
+	@NotBlank(message = "名前を入力してください")
+	@Pattern(regexp="(?=\\S+$).{1,10}", message = "名前はスペース無で半角10文字以内にしてください。")
 	private String userName;
 
 	private boolean enabled;

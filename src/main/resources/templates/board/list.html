@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>게시판</title>
+    <title>掲示板</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -17,10 +17,10 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th class="one wide">번호</th>
-        <th class="ten wide">글제목</th>
-        <th class="two wide">작성자</th>
-        <th class="three wide">작성일</th>
+        <th class="one wide">番号</th>
+        <th class="ten wide">タイトル</th>
+        <th class="two wide">作成者</th>
+        <th class="three wide">作成日</th>
     </tr>
     </thead>
 
@@ -31,7 +31,7 @@
             <span th:text="${board.articleNumber}"></span>
         </td>
         <td>
-            <!-- 글번호를 통해 글 내용 볼 수 있도록하기위해    -->
+            <!-- ポスト番号を通じてポスト内容確認ができるようにするため    -->
             <a th:href="@{'/board/list/' + ${board.articleNumber}}">
                 <span th:text="${board.title}"></span>
             </a>
@@ -74,24 +74,24 @@
 <!--<form th:action="@{'/board/edit/' + ${boardDto.articleNumber}}" method="post">-->
 <form action="/board/search" method="GET" >
     <div class="input-group mb-3" style="width: 35%; float:left;">
-        <label class="input-group-text" th:for="searchOption">검색기준</label>
+        <label class="input-group-text" th:for="searchOption">検索基準</label>
         <select class="form-select" th:id="searchOption"  th:name="searchOption" >
-            <option th:value="1" selected>제목</option>
-            <option  th:value="2">작성자</option>
-            <option  th:value="3">내용</option>
+            <option th:value="1" selected>タイトル</option>
+            <option  th:value="2">作成者</option>
+            <option  th:value="3">内容</option>
         </select>
-        <input name="keyword" type="text" placeholder="검색어를 입력해주세요" style="width: 60%" required>
+        <input name="keyword" type="text" placeholder="検索ワード" style="width: 60%" required>
     </div>
     <div style="float: left;margin-left: 10px; margin-right: 20px">
-        <button class="btn btn-outline-success">검색</button>
+        <button class="btn btn-outline-success">検索</button>
     </div>
 </form>
 <div style="margin-left: 20px">
-    <a th:href="@{/board/list}"  class="btn btn-outline-info">전체목록</a>
+    <a th:href="@{/board/list}"  class="btn btn-outline-info">ポストリスト</a>
 </div>
 
 <div style="clear: both">
-    <a th:href="@{/board/post}"  class="btn btn-primary">글쓰기</a>
+    <a th:href="@{/board/post}"  class="btn btn-primary">作成</a>
 </div>
 
 <input name="curPage" type="hidden" th:value="${activePage}">

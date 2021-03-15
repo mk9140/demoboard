@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 
 /*
-* 게시판 글 관련 데이터 전달 객체(DTO)
+* 掲示板ポスト関連DTO(Data Access Object)
 * */
 
 

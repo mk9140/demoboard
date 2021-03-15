@@ -29,14 +29,14 @@ class BoardRepositoryInterfaceTest {
 	public void setUp() {
 		boardRepository.deleteAll();
 
-		//given : html로부터 입력받으면
+		//given : htmlから値を取ると
 		BoardEntity boardEntity = BoardEntity.builder()
 				.content("test content")
 				.title("test title")
 				.writer("test writer")
 				.build();
 
-		//when : DB에 저장을 하고, 다시 받아온 articleNumber가
+		//when : DBに格納したポストのarticleNumberは
 		resultArticleNumber = boardRepository.save(boardEntity).getArticleNumber();
 	}
 	@AfterEach
@@ -45,22 +45,21 @@ class BoardRepositoryInterfaceTest {
 
 	}
 
-/*
 	@Test
 	@DisplayName("ポスト格納")
 	public void savePost() {
-		//then 1이어야 한다
-		assertThat(resultArticleNumber).isEqualTo(1L); //DB에서 자동으로 증가시주므로, 테스트케이스에서는 1
+		// then 1である
+		assertThat(resultArticleNumber).isEqualTo(1L);
 	}
 
 	@Test
 	@DisplayName("ポスト確認")
 	void getPost() {
-		//when : 저장된 정보를 글번호로 조회했을 때
-		Optional<BoardEntity> boardEntityWrapper  = boardRepository.findById(resultArticleNumber); //PK값을 where조건으로 해서 데이터 가져오는 메서드
-		BoardEntity result = boardEntityWrapper.get(); // get() : 레퍼로부터 엔티티를빼옴
+		//when : ポストをarticleNumberで検索した時
+		Optional<BoardEntity> boardEntityWrapper  = boardRepository.findById(resultArticleNumber);
+		BoardEntity result = boardEntityWrapper.get();
 
-		//입력값과 결과값이 같아야 한다.
+		//then 入力値と結果は一致すべき
 		assertThat(resultArticleNumber).isEqualTo(result.getArticleNumber());
 		assertThat("test title").isEqualTo(result.getTitle());
 		assertThat("test content").isEqualTo(result.getContent());
@@ -107,7 +106,6 @@ class BoardRepositoryInterfaceTest {
 
 	}
 
-*/
 
 
 	@Test

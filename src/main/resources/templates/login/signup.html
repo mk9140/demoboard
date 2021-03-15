@@ -5,41 +5,41 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<title>회원등록</title>
+	<title>ユーザー登録</title>
 
 </head>
 <body>
-<h1>회원등록</h1>
+<h1>ユーザー登録</h1>
 <hr>
 
 <form th:action="@{/member/signup}" method="post" th:modelAttribute="memberDto">
 	<div class="form-group row mb-3">
 		<div class="col-xs-3">
-			<input class="form-control w-25" id="userId" type="text" name="userId" th:value="${memberDto.userId}" placeholder="아이디를 입력해주세요."  required oninput="checkId()">
+			<input class="form-control w-25" id="userId" type="text" name="userId" th:value="${memberDto.userId}" placeholder="IDを入力してください。"  required oninput="checkId()">
 		</div>
 		<div>
-			<span th:text="${valid_userId}"></span><!--	에러메시지 표시부	-->
+			<span th:text="${valid_userId}"></span><!--	エラー表示	-->
 		</div>
 	</div>
 
 	<div class="form-group row mb-3">
 		<div class="col-xs-3">
-			<input class="form-control  w-25 " type="text" name="userName" th:value="${memberDto.userName}" placeholder="이름을 입력해주세요." required>
-			<span th:text="${valid_userName}"></span><!--	에러메시지 표시부	-->
+			<input class="form-control  w-25 " type="text" name="userName" th:value="${memberDto.userName}" placeholder="名前を入力してください" required>
+			<span th:text="${valid_userName}"></span><!--	エラー表示	-->
 		</div>
 	</div>
 
 	<div class="form-group row mb-3">
 		<div class="col-xs-3">
-			<!-- 회원가입 실패 시 비밀번호는 지워주기 위해 th:value 미사용-->
-			<input class="form-control  w-25" type="password" name="userPassword" placeholder="비밀번호" required>
-			<span th:text="${valid_userPassword}"></span><!--	에러메시지 표시부	-->
+			<!-- パスワードを消すために th:value未使用-->
+			<input class="form-control  w-25" type="password" name="userPassword" placeholder="パスワード" required>
+			<span th:text="${valid_userPassword}"></span><!--	エラー表示	-->
 		</div>
 	</div>
 
 	</div>
 	<br>
-	<button class="btn btn-info" id="signupBtn" onclick="dataSend()">회원등록</button>
+	<button class="btn btn-info" id="signupBtn" onclick="dataSend()">ユーザー登録</button>
 	</div>
 	<br>
 	<p style="color: red" id="idError"></p>
@@ -64,7 +64,7 @@
 					} else {
 						$("#signupBtn").prop("disabled", true);
 						$("#signupBtn").css("filter", "grayscale(1)");
-						$("#idError").text("이미 존재하는 아이디 입니다.")
+						$("#idError").text("既に存在しているIDです。")
 					}
 				}
 			});
