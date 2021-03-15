@@ -48,7 +48,7 @@
 	<div class="row mt-3">
 		<div class="col-auto mr-auto"></div>
 		<div class="col-auto">
-			<a class="btn btn-info" th:href="@{'/board/edit/' + ${boardDto.articleNumber}}" role="button">수정</a>
+			<a class="btn btn-info" th:href="@{'/board/edit/' + ${boardDto.articleNumber}}" role="button">修正</a>
 		</div>
 		<div class="col-auto">
 			<form id="delete-form" th:action="@{'/board/' + ${boardDto.articleNumber}}" method="post">
@@ -57,51 +57,10 @@
 				<!--	* 一般的に、<input type="hidden">を使う	-->
 				<!--	delete -> @DeleteMappingを使ってコントロールが受信			-->
 				<input type="hidden" name="_method" value="delete"/>
-				<button id="delete-btn" type="submit" class="btn btn-danger">삭제</button>
+				<button id="delete-btn" type="submit" class="btn btn-danger">削除</button>
 			</form>
 		</div>
 	</div>
-
-
-
-
-
-
-
-
-
-<!--	<div class="div-read">
-		<div class="mb-3 row form-control">
-			<div class="col-sm-10">
-				<label for="staticTitle" class="col-sm-2 col-form-label">제목</label>
-				<input type="text" readonly class="form-control form-control-plaintext" id="staticTitle" th:value="${boardDto.title}">
-			</div>
-
-			<div class="col-sm-10">
-				<p th:inline="text">작성일 : [[${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
-			</div>
-
-			<div class="col-sm-10">
-				<label for="staticContent" class="col-sm-2 col-form-label">내용</label>
-				<textarea readonly class="form-control form-control-plaintext" id="staticContent" th:value="${boardDto.content}" style="height: 250px">
-					[[${boardDto.content}]]
-				</textarea>
-			</div>
-		</div>
-	</div>-->
-	<!--
-		<div>
-			<a th:href="@{'/board/edit/' + ${boardDto.articleNumber}}">
-				<button>수정</button>
-			</a>
-
-			<form id="delete-form" th:action="@{'/board/' + ${boardDto.articleNumber}}" method="post">
-				<input type="hidden" name="_method" value="delete"/>
-				<button id="delete-btn">삭제</button>
-			</form>
-		</div>
-
-		-->
 </div>
 
 </body>
