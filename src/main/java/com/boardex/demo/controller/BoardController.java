@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,10 +96,20 @@ public class BoardController {
 	}
 
 	/* test */
+	@ResponseBody
 	@PostMapping("/board/pageCheck")
-	public void testfunc(@RequestBody String param ){
+	public Map<String, Integer> testfunc(@RequestBody int param ){
+		Map<String, Integer> rstMap = new HashMap<>();
+		Map<String, Integer> prevEndPage;
+		Map<String, Integer> nextStartPage;
+		prevEndPage	= boardService.getPrevEndPage(param);
+		nextStartPage = boardService.getNextStartPage(param);
 
-		System.out.println("dddzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzd = " + param);
+		rstMap.putAll(prevEndPage);
+		rstMap.putAll(nextStartPage);
+
+		System.out.println("zzzzzzzzzzzzzzzzzzzzzzzzzz" + rstMap + "...........");
+		return rstMap ;
 
 	}
 

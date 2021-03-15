@@ -11,9 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -21,7 +19,7 @@ public class BoardService {
 
 	private final BoardRepositoryInterface boardRepository;
 
-	private static final int DISPLAY_PAGE_LENGTH = 300; // pagination
+	private static final int DISPLAY_PAGE_LENGTH = 5; // pagination
 	private static final int DISPLAY_ENTITY_COUNT = 4; // 画面別表示するポストの数
 
 
@@ -136,5 +134,73 @@ public class BoardService {
 				.build();
 	}
 
+	public Map<String, Integer> getPrevEndPage(int curPageNum) {
+		Map<String, Integer> otherBlock = new HashMap<>();
 
+
+		Double totalEntityCount = Double.valueOf(this.getBoardCount());
+		int totalPage = (int)(Math.ceil((totalEntityCount/ DISPLAY_ENTITY_COUNT)));
+
+		if(curPageNum <= 0){
+			curPageNum = 1;
+		}
+
+		int currentBlock = curPageNum % DISPLAY_PAGE_LENGTH == 0 ?
+				curPageNum / DISPLAY_PAGE_LENGTH : (curPageNum / DISPLAY_PAGE_LENGTH) + 1;
+
+
+		int tempBlock = currentBlock;
+		if (currentBlock >= 2){
+			currentBlock = currentBlock - 1;
+		}
+
+		int startPage = (currentBlock-1) * DISPLAY_PAGE_LENGTH + 1;
+		int endPage = startPage+DISPLAY_PAGE_LENGTH -1;
+		if (endPage > totalPage) {
+			endPage = totalPage;
+		}
+
+		if(startPage == 1 && tempBlock == 1){
+			endPage = 1;
+		}
+
+		otherBlock.put("previous", endPage);
+
+		return otherBlock;
+	}
+
+
+	public Map<String, Integer> getNextStartPage(int curPageNum) {
+		Map<String, Integer> otherBlock = new HashMap<>();
+		Double totalEntityCount = Double.valueOf(this.getBoardCount());
+		int totalPage = (int)(Math.ceil((totalEntityCount/ DISPLAY_ENTITY_COUNT)));
+
+
+		if(curPageNum <= 0){
+			curPageNum = 1;
+		}
+
+		int currentBlock = curPageNum % DISPLAY_PAGE_LENGTH == 0 ?
+				curPageNum / DISPLAY_PAGE_LENGTH : (curPageNum / DISPLAY_PAGE_LENGTH) + 1;
+
+		int curStartPage = (currentBlock-1) * DISPLAY_PAGE_LENGTH + 1;
+
+		currentBlock++;
+		int nextStartPage = (currentBlock-1) * DISPLAY_PAGE_LENGTH + 1;
+		otherBlock.put("next", nextStartPage);
+
+		int endPage = curStartPage+DISPLAY_PAGE_LENGTH -1;
+		if (endPage > totalPage) {
+			endPage = totalPage;
+		}
+
+		if (nextStartPage > endPage){
+			nextStartPage = endPage;
+		}
+
+		otherBlock.put("total", totalPage);
+
+
+		return otherBlock;
+	}
 }

@@ -49,11 +49,13 @@
 <nav aria-label="...">
     <ul class="pagination">
 
-        <!--        <li class="page-item disabled">-->
-        <!--            <span class="page-link">-->
-        <!--                <a th:href="@{'/board/list?page=' + ${pageList}}">Previous</a>-->
-        <!--            </span>-->
-        <!--        </li>-->
+        <li class="page-item disabled" id="prevButtonLi">
+            <span>
+                <a  class="page-link" id="prevButton">Previous</a>
+            </span>
+        </li>
+
+
 
         <li th:each="pageNum : ${pageList}" th:if="${pageNum != null}" aria-current="page" th:class="${pageNum == activePage}? 'page-item active' : 'page-item'" >
             <span th:inline="text">
@@ -61,9 +63,12 @@
             </span>
         </li>
 
-        <!--        <li class="page-item">-->
-        <!--            <a class="page-link" href="#">Next</a>-->
-        <!--        </li>-->
+
+        <li class="page-item disabled" id="nextButtonLi">
+            <span>
+                <a class="page-link" id="nextButton">Next</a>
+            </span>
+        </li>
     </ul>
 </nav>
 <!--<form th:action="@{'/board/edit/' + ${boardDto.articleNumber}}" method="post">-->
@@ -94,18 +99,39 @@
 
 <script>
     $(document).ready(
-    function pageCheck() {
-        var currentPage = $('input[name=curPage]').val();
-        $.ajax({
-            type:"POST",
-            data : currentPage,
-            contentType: "application/json",
-            url : "/board/pageCheck",
-            success : function(data) {
+            function pageCheck() {
+                var currentPage = $('input[name=curPage]').val();
+                $.ajax({
+                    type:"POST",
+                    data : currentPage,
+                    contentType: "application/json",
+                    url : "/board/pageCheck",
+                    success : function(data) {
+                        if (data["previous"] === 1) {
+                            $('#prevButtonLi').attr('class', 'page-item disabled');
+                            $('#prevButton').attr('aria-disabled', 'true');
+                        }else{
+                            $('#prevButtonLi').attr('class', 'page-item');
+                            $('#prevButton').attr('aria-disabled', 'false');
+                            $('#prevButton').attr('href', '/board/list?page=' + data["previous"]);
+                        }
 
-            }
-        });
-    })
+                        if (data["next"] > data["total"]) {
+                            $('#nextButtonLi').attr('class', 'page-item disabled');
+                            $('#nextButton').attr('aria-disabled', 'true');
+                        }else{
+                            $('#nextButtonLi').attr('class', 'page-item');
+                            $('#nextButton').attr('aria-disabled', 'false');
+                            $('#nextButton').attr('href', '/board/list?page=' + data["next"]);
+                        }
+
+                        console.log('Func: success, #107, data ->', data["previous"]);
+
+
+
+                    }
+                });
+            })
 </script>
 </body>
 </html>
